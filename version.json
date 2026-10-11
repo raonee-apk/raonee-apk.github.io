@@ -1,0 +1,6 @@
+{
+  "version": "1.3.0",
+  "build": 4,
+  "notes": "Novo: resumo do dia (WhatsApp e celular) com previsão do tempo, tarefas que se repetem, aviso de conflito de horário e pesquisa na internet pelo WhatsApp",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/AgendaExtraordinaria.apk"
+}
