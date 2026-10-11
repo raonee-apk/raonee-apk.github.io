@@ -1,0 +1,6 @@
+{
+  "version": "1.2.0",
+  "build": 3,
+  "notes": "Novo: Tarefas (to-do) na Agenda e no Início, com lembretes no celular e pelo WhatsApp",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/AgendaExtraordinaria.apk"
+}
