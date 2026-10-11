@@ -1,0 +1,6 @@
+{
+  "version": "1.4.1",
+  "build": 6,
+  "notes": "Correções: áudio no Assistente da versão web (segure o 🎙️ e fale), ordem dos próximos compromissos no Início e categorias em ordem alfabética",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/AgendaExtraordinaria.apk"
+}
