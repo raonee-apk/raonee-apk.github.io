@@ -1,0 +1,6 @@
+{
+  "version": "1.5.0",
+  "build": 7,
+  "notes": "Novo: filtros nas Tarefas — Hoje, Esta semana, Próxima semana, Próximos 7 dias, Este mês, Semana passada, próximos N dias ou período escolhido; busca, só importantes/família/recorrentes e ordenação",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/AgendaExtraordinaria.apk"
+}
