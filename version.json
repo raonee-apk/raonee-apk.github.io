@@ -1,0 +1,6 @@
+{
+  "version": "1.8.0",
+  "build": 11,
+  "notes": "Planos por módulo: base do plano UaiPlan Metas (cobrador), com áreas de outros módulos como convite.",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk"
+}
