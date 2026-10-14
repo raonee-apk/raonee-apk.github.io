@@ -1,0 +1,6 @@
+{
+  "version": "1.10.0",
+  "build": 14,
+  "notes": "Atenção: esta versão é o UaiPlan definitivo e é instalada como um app novo. Depois de entrar nele, desinstale o UaiPlan antigo (vai aparecer duplicado). Seus dados continuam na sua conta.",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk"
+}
