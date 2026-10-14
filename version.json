@@ -1,0 +1,6 @@
+{
+  "version": "1.11.0",
+  "build": 16,
+  "notes": "Back office completo: equipe de administradores, cortesias com prazo, ficha do cliente, planos e preços, auditoria e saúde do sistema",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk"
+}
