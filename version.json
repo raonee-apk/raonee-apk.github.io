@@ -1,0 +1,6 @@
+{
+  "version": "1.19.0",
+  "build": 30,
+  "notes": "Gráficos: toque numa categoria para ver os lançamentos do mês; ranking também de receitas.",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk"
+}
