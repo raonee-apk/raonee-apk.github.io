@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instalar o UaiPlan no Android</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#F8FAFC; --surface:#FFFFFF; --text:#1A1A2E; --muted:#6B7280; --line:#E5E7EB; --primary:#3B5BDB; --tint:#E6EBFC; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0F172A; --surface:#1E293B; --text:#F8FAFC; --muted:#94A3B8; --line:#334155; --primary:#5C7CFA; --tint:#1E2A5E; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 'Plus Jakarta Sans', system-ui, sans-serif; }
+  header a { display:inline-flex; align-items:center; gap:10px; padding:16px; color:var(--text); text-decoration:none; font-weight:700; font-size:20px; }
+  header img { width:28px; height:28px; } header b { color:var(--primary); }
+  main { max-width:640px; margin:0 auto; padding:8px 16px 48px; }
+  h1 { font-size:clamp(26px,6vw,34px); line-height:1.2; margin:8px 0 8px; }
+  .lead { color:var(--muted); margin:0 0 20px; }
+  .btn { display:block; text-align:center; padding:15px 20px; border-radius:12px; background:var(--primary); color:#fff; font-weight:700; text-decoration:none; font-size:17px; }
+  ol { padding-left:0; list-style:none; counter-reset:s; }
+  ol li { counter-increment:s; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px 14px 56px; margin:10px 0; position:relative; }
+  ol li::before { content:counter(s); position:absolute; left:14px; top:14px; width:28px; height:28px; border-radius:50%; background:var(--primary); color:#fff; font-weight:800; display:grid; place-items:center; }
+  .note { background:var(--tint); border-radius:14px; padding:14px 16px; margin-top:20px; }
+  small { color:var(--muted); }
+</style>
+</head>
+<body>
+<header><a href="./"><img src="assets/mark.png" alt=""><span>Uai<b>Plan</b></span></a></header>
+<main>
+  <h1>Instale o UaiPlan no Android</h1>
+  <p class="lead">O app de Android faz o que o site não consegue: lê as notificações do seu banco e anota compras e Pix sozinho, e te lembra das contas e tarefas na hora certa.</p>
+  <a class="btn" id="download" href="https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk">Baixar o app (Android)</a>
+  <p><small id="ver">Versão mais recente.</small></p>
+  <ol>
+    <li><b>Abra o arquivo baixado.</b> Se o Android perguntar, permita que o navegador instale apps. É um aviso padrão para apps fora da Play Store.</li>
+    <li><b>Entre com a mesma conta</b> que você já usa no UaiPlan e aceite as notificações.</li>
+    <li><b>Para anotar os gastos sozinho:</b> no app, vá em Mais › Leitura de notificações e ative o UaiPlan. Se o Android bloquear, abra Informações do app › menu ⋮ › Permitir configurações restritas, e tente de novo.</li>
+    <li><b>Escolha os apps dos seus bancos.</b> O UaiPlan só lê as notificações deles. Tudo chega para você confirmar antes de entrar nas contas.</li>
+  </ol>
+  <div class="note">
+    <b>Por que não está na Play Store?</b><br>
+    A Uai Soluções está concluindo o registro da empresa, e a Play Store exige o CNPJ para publicar como empresa. Assim que sair, o UaiPlan entra na loja e as atualizações passam a ser automáticas. Até lá, o app avisa dentro dele quando houver versão nova.
+  </div>
+  <p style="margin-top:20px"><small>Dúvidas? Escreva <b>suporte</b> no Assistente do app ou para <a href="mailto:contato@uaiplan.com.br">contato@uaiplan.com.br</a>.</small></p>
+</main>
+<script>
+  fetch('version.json', { cache: 'no-store' }).then((r) => r.json()).then((v) => {
+    document.getElementById('ver').textContent = 'Versão ' + v.version + '.';
+    if (v.apk) document.getElementById('download').href = v.apk;
+  }).catch(() => {});
+</script>
+</body>
+</html>
