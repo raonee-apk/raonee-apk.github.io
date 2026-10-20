@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UaiPlan — sua vida organizada numa conversa de WhatsApp</title>
+  <meta name="description" content="Mande um áudio como mandaria pra um amigo: o UaiPlan anota o gasto, marca na agenda, lembra da conta e cobra sua meta. 14 dias grátis, sem cartão.">
+  <meta property="og:title" content="UaiPlan — sua vida organizada numa conversa">
+  <meta property="og:description" content="Finanças, agenda, tarefas e metas pelo WhatsApp. Teste grátis por 14 dias.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://uaiplan.com.br/">
+  <meta property="og:site_name" content="UaiPlan">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="https://uaiplan.com.br/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="UaiPlan: sua vida organizada numa conversa de WhatsApp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://uaiplan.com.br/">
+  <meta name="facebook-domain-verification" content="l0kryl85p8hh93jh0h2g3x6wwk4g5o" />
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Paleta oficial do UaiPlan */
+      --bg: #F8FAFC; --surface: #FFFFFF; --text: #1A1A2E; --muted: #6B7280; --line: #E5E7EB;
+      --primary: #3B5BDB; --primary-dark: #2F4AC0; --accent: #2F9E44; --warn: #E67700; --tint: #E6EBFC;
+      --tasks: #7C3AED; --danger: #C92A2A;
+      /* Conversa (cores do WhatsApp) */
+      --wa-bg: #EFEAE2; --wa-me: #D9FDD3; --wa-bot: #FFFFFF; --wa-text: #111B21; --wa-meta: #667781; --wa-head: #F0F2F5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0F172A; --surface: #1E293B; --text: #F8FAFC; --muted: #94A3B8; --line: #334155;
+        --primary: #5C7CFA; --primary-dark: #3B5BDB; --tint: #1E2A5E; --accent: #51CF66; --warn: #FFA94D;
+        --tasks: #A78BFA; --danger: #FF6B6B;
+        --wa-bg: #0B141A; --wa-me: #005C4B; --wa-bot: #202C33; --wa-text: #E9EDEF; --wa-meta: #8696A0; --wa-head: #202C33;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.55; }
+    a { color: var(--primary); }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    header.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+    header.top .wrap { display: flex; align-items: center; gap: 12px; height: 60px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; color: var(--text); }
+    .brand b { color: var(--primary); font-weight: 700; }
+    .brand img { width: 30px; height: 30px; }
+    nav.links { margin-left: auto; display: flex; gap: 18px; align-items: center; }
+    nav.links a { color: var(--muted); text-decoration: none; font-weight: 500; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 22px; border-radius: 12px; font-weight: 700; text-decoration: none; border: 0; cursor: pointer; font-size: 16px; }
+    .btn.primary { background: var(--primary); color: #fff; }
+    .btn.primary:hover { background: var(--primary-dark); }
+    .btn.ghost { background: var(--surface); color: var(--text); border: 1px solid var(--line); }
+    .btn.small { padding: 8px 14px; font-size: 14px; }
+
+    /* ---------------- topo ---------------- */
+    .hero { padding: 48px 0 24px; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 48px; align-items: center; }
+    .hero > * { min-width: 0; }
+    .hero h1 { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.07; margin: 0 0 18px; letter-spacing: -0.03em; }
+    .hero h1 em { font-style: normal; color: var(--primary); }
+    .hero p.lead { font-size: 19px; color: var(--muted); margin: 0 0 26px; max-width: 560px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .note { font-size: 14px; color: var(--muted); margin-top: 12px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .pill { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 14px; font-weight: 600; }
+
+    /* ---------------- celular com a conversa ---------------- */
+    .phone { width: 100%; max-width: 380px; justify-self: center; border-radius: 42px; padding: 11px; background: #0D1117; box-shadow: 0 40px 80px -30px rgba(16, 40, 90, .55); }
+    .screen { border-radius: 32px; overflow: hidden; background: var(--wa-bg); display: flex; flex-direction: column; height: 600px; }
+    .wa-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--wa-head); color: var(--wa-text); }
+    .wa-head .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: #fff; font-weight: 800; }
+    .wa-head small { display: block; color: var(--wa-meta); font-size: 12px; }
+    .wa-head .who { font-weight: 700; font-size: 15px; line-height: 1.2; }
+    .day-pill { align-self: center; background: var(--wa-head); color: var(--wa-meta); font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 8px; margin: 4px 0; animation: pop .25s ease-out; }
+    .msgs { flex: 1; overflow: hidden; padding: 14px 12px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
+    .b { max-width: 84%; padding: 7px 10px 6px; border-radius: 10px; font-size: 14px; line-height: 1.42; color: var(--wa-text); box-shadow: 0 1px .5px rgba(11, 20, 26, .13); white-space: normal; animation: pop .25s ease-out; }
+    .b.me { align-self: flex-end; background: var(--wa-me); border-top-right-radius: 3px; }
+    .b.bot { align-self: flex-start; background: var(--wa-bot); border-top-left-radius: 3px; }
+    .b .t { float: right; font-size: 11px; color: var(--wa-meta); margin: 6px 0 -4px 10px; }
+    .b.me .t::after { content: " ✓✓"; color: #53BDEB; }
+    .audio { display: flex; align-items: center; gap: 8px; min-width: 190px; }
+    .audio .play { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--wa-meta) 30%, transparent); font-size: 11px; }
+    .audio .wave { flex: 1; height: 22px; background: repeating-linear-gradient(90deg, var(--wa-meta) 0 2px, transparent 2px 5px); mask: linear-gradient(transparent 30%, #000 30%, #000 70%, transparent 70%), radial-gradient(#000, #000); opacity: .7; border-radius: 2px; }
+    .audio .dur { font-size: 11px; color: var(--wa-meta); }
+    .transcript { display: block; font-size: 12.5px; color: var(--wa-meta); margin-top: 4px; font-style: italic; }
+    .typing { align-self: flex-start; background: var(--wa-bot); border-radius: 10px; padding: 10px 12px; display: flex; gap: 4px; }
+    .typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--wa-meta); animation: blink 1.2s infinite both; }
+    .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+    @keyframes pop { from { transform: translateY(6px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+    .caption { text-align: center; color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+    /* ---------------- seções ---------------- */
+    section { padding: 56px 0; }
+    section h2 { font-size: clamp(27px, 3.6vw, 40px); margin: 0 0 8px; letter-spacing: -0.02em; line-height: 1.15; }
+    section p.sub { color: var(--muted); margin: 0 0 30px; font-size: 17px; max-width: 680px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+    .card .ico { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; background: var(--tint); margin-bottom: 12px; }
+    .card h3 { margin: 0 0 6px; font-size: 18px; }
+    .card p { margin: 0; color: var(--muted); }
+
+    /* um dia */
+    .day { display: grid; gap: 0; position: relative; max-width: 760px; }
+    .day::before { content: ""; position: absolute; left: 63px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+    .moment { display: grid; grid-template-columns: 52px 24px 1fr; gap: 12px; align-items: start; padding: 10px 0; }
+    .moment time { font-weight: 800; color: var(--primary); text-align: right; padding-top: 2px; font-variant-numeric: tabular-nums; }
+    .moment .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--primary); margin: 6px auto 0; box-shadow: 0 0 0 4px var(--bg); position: relative; }
+    .moment h3 { margin: 0; font-size: 17px; } .moment p { margin: 2px 0 0; color: var(--muted); }
+
+    /* tudo conversa */
+    .flows { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .flow .step { background: var(--tint); color: var(--text); border-radius: 10px; padding: 6px 10px; font-weight: 600; font-size: 14px; }
+    .flow .arrow { color: var(--muted); font-weight: 800; }
+    .flow + p { margin-top: 10px; }
+
+    /* o que pedir */
+    .asks { display: flex; flex-wrap: wrap; gap: 10px; }
+    .ask { background: var(--surface); border: 1px solid var(--line); border-radius: 14px 14px 14px 4px; padding: 10px 14px; font-size: 15px; }
+    .ask::before { content: "“"; color: var(--primary); font-weight: 800; }
+    .ask::after { content: "”"; color: var(--primary); font-weight: 800; }
+
+    .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .shots figure { margin: 0; }
+    .shots img { width: 100%; border-radius: 22px; border: 1px solid var(--line); display: block; }
+    .shots figcaption { text-align: center; color: var(--muted); font-size: 14px; margin-top: 8px; }
+
+    .modules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .module ul { list-style: none; padding: 0; margin: 12px 0 0; }
+    .module li { padding: 4px 0 4px 26px; position: relative; color: var(--muted); }
+    .module li::before { content: "✓"; position: absolute; left: 4px; color: var(--accent); font-weight: 800; }
+    .combo { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; border: 2px solid var(--primary); }
+    .combo p { margin: 4px 0 0; }
+
+    details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; }
+    summary { font-weight: 600; cursor: pointer; }
+    details p { color: var(--muted); margin: 10px 0 0; }
+    .download { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .final { text-align: center; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border-radius: 28px; padding: 48px 20px; margin: 24px 0 56px; }
+    .final h2 { color: #fff; } .final p { color: rgba(255, 255, 255, .85); margin: 0 0 24px; }
+    .final .btn { background: #fff; color: var(--primary-dark); }
+    footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; }
+    footer a { color: var(--muted); }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: minmax(0, 1fr); padding-top: 28px; gap: 32px; }
+      .phone { margin: 0 auto; }
+      .grid, .shots, .download, .flows, .modules { grid-template-columns: 1fr; }
+      nav.links a:not(.btn) { display: none; }
+      nav.links { gap: 8px; }
+      .pie .donut { flex-basis: 112px; height: 112px; }
+      .pie .donut::after { inset: 22px; }
+      .shots img { max-width: 360px; margin: 0 auto; }
+      .screen { height: 540px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .b, .typing i { animation: none; } html { scroll-behavior: auto; } }
+
+    /* ---------------- novas seções ---------------- */
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .steps3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: s; }
+    .steps3 .card { position: relative; padding-top: 58px; }
+    .steps3 .card::before { counter-increment: s; content: counter(s); position: absolute; top: 18px; left: 22px; width: 30px; height: 30px; border-radius: 50%; background: var(--primary); color: #fff; font-weight: 800; display: grid; place-items: center; }
+    .split { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 32px; align-items: center; }
+    .split > * { min-width: 0; }
+    .notif { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; box-shadow: 0 10px 30px -18px rgba(16, 40, 90, .35); margin-bottom: 12px; }
+    .notif small { color: var(--muted); font-weight: 600; display: block; margin-bottom: 2px; }
+    .notif.arrow { text-align: center; border: 0; box-shadow: none; background: none; color: var(--muted); padding: 0; font-weight: 800; }
+    .notif.ok { border-color: var(--accent); }
+    .pie { display: flex; gap: 18px; align-items: center; }
+    .pie .donut { flex: 0 0 132px; height: 132px; border-radius: 50%; position: relative;
+      background: conic-gradient(#8e6fd8 0 41%, #e57373 41% 73%, #ffb74d 73% 87%, #3f51b5 87% 96%, #a1887f 96% 100%); }
+    .pie .donut::after { content: ""; position: absolute; inset: 26px; border-radius: 50%; background: var(--surface); }
+    .pie .donut span { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; font-weight: 800; font-size: 13px; }
+    .pie ul { list-style: none; margin: 0; padding: 0; flex: 1; min-width: 0; font-size: 14px; }
+    .pie li { display: flex; align-items: center; gap: 8px; padding: 3px 8px; border-radius: 8px; }
+    .pie li i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+    .pie li b { margin-left: auto; font-weight: 600; color: var(--muted); }
+    .pie li.on { background: rgba(229, 115, 115, .16); font-weight: 700; }
+    .pie li.on b { color: inherit; }
+    .minichat { background: var(--wa-bg); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+    .minichat .b { animation: none; font-size: 14px; }
+    .card .minichat-title { font-weight: 700; margin: 0 0 10px; color: var(--text); }
+    .privacy { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .privacy .card h3 { display: flex; gap: 10px; align-items: flex-start; }
+    .pricing { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+    .offer { display: flex; flex-direction: column; position: relative; }
+    .offer.featured { border: 2px solid var(--primary); }
+    .offer .tag { position: absolute; top: -12px; left: 18px; background: var(--tasks); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+    .offer .tag.save { background: var(--accent); }
+    .card.offer .price { font-size: 38px; font-weight: 800; margin: 6px 0 0; letter-spacing: -.02em; color: var(--text); }
+    .offer .price small { font-size: 16px; font-weight: 500; color: var(--muted); }
+    .offer p.detail { color: var(--muted); margin: 4px 0 16px; font-size: 14px; flex: 1; }
+    .includes { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 18px 0 6px; color: var(--muted); }
+    .includes span::before { content: "✓ "; color: var(--accent); font-weight: 800; }
+    .fineprint { color: var(--muted); font-size: 14px; margin-top: 14px; }
+    .mineiro { font-style: italic; opacity: .9; margin-top: 12px; }
+    @media (max-width: 900px) {
+      .steps3, .split, .privacy, .pricing { grid-template-columns: minmax(0, 1fr); }
+    }
+    /* ---------------- barra do teste grátis e "Fale com a gente" ---------------- */
+    .stickycta { position: fixed; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: calc(100% - 140px); bottom: 20px; z-index: 30;
+      display: flex; align-items: center; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+      padding: 10px 10px 10px 22px; box-shadow: 0 18px 50px -12px rgba(30, 50, 120, .45);
+      opacity: 0; transform: translateY(24px); pointer-events: none; transition: opacity .3s, transform .3s; }
+    .stickycta.on { opacity: 1; transform: none; pointer-events: auto; }
+    .stickycta .gift { font-size: 26px; }
+    .stickycta strong { display: block; font-size: 16px; line-height: 1.25; }
+    .stickycta small { color: var(--muted); font-size: 13px; }
+    .stickycta small b { color: var(--warn); }
+    .stickycta .btn { border-radius: 999px; white-space: nowrap; padding: 12px 22px; box-shadow: 0 6px 18px -6px var(--primary); }
+    .stickycta .btn .short { display: none; }
+    .stickycta .x { background: none; border: 0; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; padding: 0 8px; }
+    .talk { position: fixed; right: 20px; bottom: 20px; z-index: 31; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+      background: var(--accent); color: #fff; font: 700 15px 'Plus Jakarta Sans', system-ui, sans-serif; border-radius: 999px; padding: 14px 18px;
+      box-shadow: 0 12px 30px -10px rgba(47, 158, 68, .8); }
+    .talk svg { width: 22px; height: 22px; }
+    .talkpanel { position: fixed; right: 20px; bottom: 86px; z-index: 31; width: 340px; background: var(--surface); border: 1px solid var(--line);
+      border-radius: 20px; box-shadow: 0 24px 60px -16px rgba(16, 40, 90, .45); overflow: hidden; }
+    .talkpanel[hidden] { display: none; }
+    .talkpanel header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; padding: 18px 20px; }
+    .talkpanel header b { font-size: 18px; display: block; }
+    .talkpanel header small { opacity: .85; }
+    .talkpanel a { display: flex; gap: 12px; align-items: center; padding: 14px 20px; text-decoration: none; color: var(--text); border-top: 1px solid var(--line); }
+    .talkpanel a:hover { background: color-mix(in srgb, var(--tint) 60%, transparent); }
+    .talkpanel a > span:first-child { font-size: 24px; }
+    .talkpanel a b { display: block; }
+    .talkpanel a small { color: var(--muted); }
+    .talkpanel a.first { background: var(--tint); }
+    .talkpanel a.first b { color: var(--primary); }
+    @media (max-width: 700px) {
+      .stickycta { left: 12px; right: 80px; bottom: 14px; width: auto; max-width: none; margin: 0; padding: 0; border: 0; background: none; box-shadow: none; }
+      .stickycta .gift, .stickycta .x, .stickycta > div { display: none; }
+      .stickycta .btn { flex: 1; padding: 0 18px; height: 56px; font-size: 16px; box-shadow: 0 10px 28px -8px rgba(59, 91, 219, .8); }
+      .stickycta .btn .short { display: inline; }
+      .stickycta .btn .long { display: none; }
+      .talk { bottom: 14px; right: 12px; padding: 0; width: 56px; height: 56px; }
+      .talk .lbl { display: none; }
+      .talkpanel { right: 12px; left: 12px; width: auto; bottom: 82px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .stickycta { transition: none; } }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#"><img src="assets/mark.png" alt=""><span>Uai<b>Plan</b></span></a>
+      <nav class="links">
+        <a href="#dia">Um dia com o UaiPlan</a>
+        <a href="#seus-dados">Seus dados</a>
+        <a href="#planos">Planos</a>
+        <a href="#duvidas">Dúvidas</a>
+        <a class="btn ghost small" href="agenda/" data-cta="entrar">Entrar</a>
+        <a class="btn primary small" href="agenda/" data-cta="menu">Testar grátis</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="hero">
+      <div>
+        <h1>Sua vida organizada <em>numa conversa de WhatsApp.</em></h1>
+        <p class="lead">Mande um áudio como mandaria pra um amigo. O UaiPlan anota o gasto, marca na agenda, lembra da conta e cobra sua meta, sem você abrir app nenhum.</p>
+        <div class="cta">
+          <a class="btn primary" href="agenda/" data-cta="hero">Testar grátis por 14 dias</a>
+          <a class="btn ghost" href="#dia">Ver um dia com o UaiPlan</a>
+        </div>
+        <p class="note">Sem cartão. Depois, a partir de <b data-price="from">R$ 19,90</b>/mês. Cancele pelo app quando quiser.</p>
+        <div class="badges" aria-label="Destaques">
+          <span class="pill">🎙️ Entende áudio</span>
+          <span class="pill">📅 Agenda Google e Outlook</span>
+          <span class="pill">👨‍👩‍👧 Para a família</span>
+        </div>
+      </div>
+      <div>
+        <div class="phone" role="region" aria-label="Demonstração de conversa com o assistente">
+          <div class="screen">
+            <div class="wa-head">
+              <div class="avatar">S</div>
+              <div><div class="who">Severino · UaiPlan</div><small id="status">online</small></div>
+            </div>
+            <div class="msgs" id="msgs" aria-live="polite"></div>
+          </div>
+        </div>
+        <p class="caption">Um dia numa conversa só. "Severino" é o nome que a Marina deu ao assistente dela.</p>
+      </div>
+    </div>
+
+    <section id="comecar">
+      <h2>Como começar, em 3 passos</h2>
+      <p class="sub">Leva menos tempo do que fazer um café.</p>
+      <div class="steps3">
+        <div class="card"><h3>Crie sua conta</h3><p>Só com o seu e-mail, no celular ou no computador. Leva 1 minuto.</p></div>
+        <div class="card"><h3>Conecte o seu WhatsApp</h3><p>O app mostra o número do UaiPlan. Você conversa com ele como com qualquer contato, e dá o nome que quiser.</p></div>
+        <div class="card"><h3>Mande o primeiro áudio</h3><p>"Gastei 20 no café." Pronto, está lançado. Prefere digitar? Também dá, no WhatsApp ou no chat do app.</p></div>
+      </div>
+    </section>
+
+    <section id="dia">
+      <h2>Um dia com o UaiPlan</h2>
+      <p class="sub">Você vive o seu dia. Ele organiza, lembra e cobra na hora certa, e só quando você tem tempo livre.</p>
+      <div class="day">
+        <div class="moment"><time>06:30</time><span class="dot"></span><div><h3>Resumo do dia</h3><p>Compromissos, tarefas, contas que vencem e a previsão do tempo, antes do café.</p></div></div>
+        <div class="moment"><time>09:15</time><span class="dot"></span><div><h3>"Gastei 32 e 50 no almoço"</h3><p>Um áudio e o gasto está lançado, na conta e na categoria certas.</p></div></div>
+        <div class="moment"><time>14:20</time><span class="dot"></span><div><h3>A conta de luz vence hoje</h3><p>Ela já tinha virado tarefa. "Já paguei a luz" dá baixa e tira da lista.</p></div></div>
+        <div class="moment"><time>15:00</time><span class="dot"></span><div><h3>Dia lotado à vista</h3><p>"Sexta já tem 3 reuniões e 9 tarefas. Quinta está tranquila, passo para lá?"</p></div></div>
+        <div class="moment"><time>21:00</time><span class="dot"></span><div><h3>Check-in das metas</h3><p>Leu? Correu? Se atrasou, ele oferece recuperar: em dobro hoje, espalhado na semana ou zerar.</p></div></div>
+      </div>
+    </section>
+
+    <section id="anota-sozinho">
+      <div class="split">
+        <div>
+          <h2>Pagou no cartão? Ele já anotou.</h2>
+          <p class="sub" style="margin-bottom:14px">No Android, o app do UaiPlan lê <b>só as notificações dos apps de banco que você escolher</b> e prepara a compra ou o Pix com valor, lugar, cartão e categoria. No iPhone, um atalho registra as compras do Apple Pay.</p>
+          <p class="sub">Você só confirma. Nada entra nas suas contas sem você ver.</p>
+        </div>
+        <div>
+          <div class="notif"><small>Notificação do banco · agora</small>Compra aprovada de R$ 47,90 em PADARIA PÃO DE QUEIJO no seu cartão final 4321.</div>
+          <div class="notif arrow">↓</div>
+          <div class="notif ok"><small>UaiPlan · para confirmar</small><b>R$ 47,90</b> · Padaria Pão de Queijo<br>💳 Cartão final 4321 · 🏷️ Alimentação · ✅ Confirmar</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="detalhe">
+      <div class="split">
+        <div>
+          <h2>Do gráfico até o cafezinho</h2>
+          <p class="sub" style="margin-bottom:14px">Viu que a Alimentação pesou no mês? <b>Toque na categoria</b> e aparecem todos os gastos dela, do maior para o menor. Toque num gasto e você vê o lançamento inteiro: dia, conta, cartão e observação.</p>
+          <p class="sub">Vale para despesas e receitas. Lançou na categoria errada? Corrige ali mesmo e o gráfico se ajusta na hora.</p>
+        </div>
+        <div>
+          <div class="notif"><small>Despesas por categoria · outubro</small>
+            <div class="pie">
+              <div class="donut" role="img" aria-label="Gráfico de pizza: Moradia 41%, Alimentação 32%, Lazer 14%, Transporte 9%, Outros 4%"><span>R$ 4.014</span></div>
+              <ul>
+                <li><i style="background:#8e6fd8"></i>Moradia<b>41%</b></li>
+                <li class="on"><i style="background:#e57373"></i>Alimentação 👆<b>32%</b></li>
+                <li><i style="background:#ffb74d"></i>Lazer<b>14%</b></li>
+                <li><i style="background:#3f51b5"></i>Transporte<b>9%</b></li>
+                <li><i style="background:#a1887f"></i>Outros<b>4%</b></li>
+              </ul>
+            </div>
+          </div>
+          <div class="notif arrow">↓</div>
+          <div class="notif"><small>Alimentação · 23 lançamentos · R$ 1.284,60</small>Supermercado BH · R$ 412,30<br>Restaurante · R$ 96,00<br>Padaria Pão de Queijo · R$ 47,90<br>…</div>
+          <div class="notif arrow">↓</div>
+          <div class="notif ok"><small>Lançamento</small><b>R$ 47,90</b> · Padaria Pão de Queijo<br>📅 14/10 · 💳 Cartão final 4321 · ✏️ Editar</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tudo-conversa">
+      <h2>Tudo conversa com tudo</h2>
+      <p class="sub">Não são quatro apps colados. Uma coisa puxa a outra, para você não precisar lembrar de nada.</p>
+      <div class="split" style="align-items:start">
+        <div class="card">
+          <p class="minichat-title">💸 Conta vira tarefa, e a tarefa some quando você paga</p>
+          <div class="minichat">
+            <div class="b me">internet de 120 vence dia 25</div>
+            <div class="b bot">🧾 Conta a pagar: <b>Internet (R$ 120,00)</b>, dia 25.<br>Três dias antes ela entra nas suas tarefas.</div>
+            <div class="b me">já paguei a internet</div>
+            <div class="b bot">✅ Baixa feita e tarefa concluída.</div>
+          </div>
+        </div>
+        <div class="card">
+          <p class="minichat-title">🎯 Meta vira tarefa, e a tarefa conta no check-in</p>
+          <div class="minichat">
+            <div class="b me">quero estudar inglês seg, qua e sex às 19h</div>
+            <div class="b bot">🎯 Meta criada. Nesses dias, às 19h, ela aparece nas suas tarefas.</div>
+            <div class="b me">terminei o inglês de hoje</div>
+            <div class="b bot">📈 Inglês: 2 de 3 na semana. Bom ritmo!</div>
+          </div>
+        </div>
+      </div>
+      <h3 style="margin:36px 0 12px">Fale do seu jeito</h3>
+      <div class="asks">
+        <span class="ask">gastei 12 no pão de queijo</span>
+        <span class="ask">paguei o aluguel</span>
+        <span class="ask">quanto gastei com mercado esse mês?</span>
+        <span class="ask">marca dentista quinta às 15h</span>
+        <span class="ask">quando estou livre na sexta?</span>
+        <span class="ask">me lembra de buscar as crianças às 17h</span>
+        <span class="ask">quero ler 10 páginas por dia</span>
+        <span class="ask">corri hoje e estudei 2 horas</span>
+        <span class="ask">durmo das 22 às 6</span>
+        <span class="ask">vai chover amanhã em BH?</span>
+        <span class="ask">relatório do mês passado</span>
+        <span class="ask">vou te chamar de Severino</span>
+      </div>
+    </section>
+
+    <section id="telas">
+      <h2>Substitui a planilha, a agenda e o app de tarefas</h2>
+      <p class="sub">No celular, no computador e no WhatsApp, sempre sincronizado.</p>
+      <div class="shots">
+        <figure><img src="assets/tela-inicio.jpg" alt="Tela inicial: saldo, teste grátis e primeiros passos" loading="lazy"><figcaption>O seu dia e o seu saldo</figcaption></figure>
+        <figure><img src="assets/tela-tarefas.jpg" alt="Tarefas por área, com contas e metas" loading="lazy"><figcaption>Tarefas por área, com contas e metas</figcaption></figure>
+        <figure><img src="assets/tela-progresso.jpg" alt="Meu progresso: carteira, metas e procrastinador" loading="lazy"><figcaption>Seu progresso no mês</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="seus-dados">
+      <h2>O que o UaiPlan vê, e o que ele não vê</h2>
+      <p class="sub">Você confia seus gastos e sua agenda a ele. Por isso, as regras são claras.</p>
+      <div class="privacy">
+        <div class="card"><h3>💬 Suas conversas ficam com você</h3><p>Ele só lê o que você manda para o número do UaiPlan. As suas outras conversas do WhatsApp, nunca.</p></div>
+        <div class="card"><h3>🏦 Não acessa sua conta do banco</h3><p>Nada de senha bancária, nunca. No Android, só lê as notificações dos apps que você escolher.</p></div>
+        <div class="card"><h3>🎙️ Áudios e fotos não ficam guardados</h3><p>Viram texto, o registro é feito e o arquivo é descartado.</p></div>
+        <div class="card"><h3>🤖 Seus dados não treinam IA</h3><p>E não são vendidos nem usados para anúncio.</p></div>
+        <div class="card"><h3>🇧🇷 Guardados no Brasil</h3><p>Em São Paulo, com comunicação criptografada e backup diário.</p></div>
+        <div class="card"><h3>🔐 Você manda</h3><p>PIN para comandos sensíveis, exportar seus lançamentos em planilha e apagar tudo pelo app.</p></div>
+      </div>
+      <p class="fineprint"><a href="privacidade.html">Ler a política de privacidade completa (LGPD)</a></p>
+    </section>
+
+    <section id="planos">
+      <h2>Teste tudo por 14 dias. Depois, um plano só, com tudo.</h2>
+      <p class="sub">Finanças, agenda, tarefas e metas, no app e no WhatsApp. Sem módulos para escolher, sem letra miúda.</p>
+      <div class="pricing">
+        <div class="card offer featured" data-plan="founder_monthly">
+          <span class="tag" data-founder-tag>Para os primeiros 200</span>
+          <h3>Preço de fundador</h3>
+          <p class="price"><span data-price="founder">R$ 19,90</span> <small>/mês</small></p>
+          <p class="detail">Pago mês a mês pelo preço do anual, travado enquanto a assinatura durar. <span data-slots></span></p>
+          <a class="btn primary" href="agenda/" data-cta="planos-fundador">Começar o teste grátis</a>
+        </div>
+        <div class="card offer" data-plan="individual_yearly">
+          <span class="tag save" data-save-tag hidden></span>
+          <h3>Anual</h3>
+          <p class="price"><span data-price="yearly-month">R$ 19,90</span> <small>/mês</small></p>
+          <p class="detail"><span data-price="yearly-total">R$ 238,80</span> por ano, à vista.</p>
+          <a class="btn ghost" href="agenda/" data-cta="planos-anual">Começar o teste grátis</a>
+        </div>
+        <div class="card offer" data-plan="individual_monthly">
+          <h3>Mensal</h3>
+          <p class="price"><span data-price="monthly">R$ 29,90</span> <small>/mês</small></p>
+          <p class="detail">Cobrado todo mês. Cancele quando quiser.</p>
+          <a class="btn ghost" href="agenda/" data-cta="planos-mensal">Começar o teste grátis</a>
+        </div>
+      </div>
+      <div class="includes"><span>Assistente no WhatsApp e no app</span><span>Lançamento por áudio e foto</span><span>Leitura das notificações do banco (Android)</span><span>Agenda Google, Outlook e iCloud</span><span>Tarefas, rotina e metas</span><span>Relatório do mês</span></div>
+      <p class="fineprint">No dia 11 do teste, avisamos quanto vai custar e o que você já organizou. Sem cartão cadastrado, nada é cobrado sozinho. Pix, boleto ou cartão. Assinou e desistiu em até 7 dias? Devolvemos o valor.</p>
+    </section>
+
+    <section id="duvidas">
+      <h2>Dúvidas frequentes</h2>
+      <details><summary>Quanto custa depois do teste?</summary><p>Um plano só, com tudo: <b data-price="monthly">R$ 29,90</b>/mês, ou <b data-price="yearly-month">R$ 19,90</b>/mês no anual. Os primeiros assinantes têm o preço de fundador, <b data-price="founder">R$ 19,90</b>/mês travado. Você escolhe no fim do teste.</p></details>
+      <details><summary>Preciso cadastrar cartão para testar?</summary><p>Não. São 14 dias com tudo liberado, sem cartão. Sem cartão cadastrado, nada é cobrado sozinho.</p></details>
+      <details><summary>O UaiPlan acessa minha conta do banco?</summary><p>Não. Ele só registra o que você manda ou, se você ativar no Android, o que aparece nas notificações dos apps de banco que você escolheu. Senha bancária, nunca.</p></details>
+      <details><summary>Vocês leem minhas conversas do WhatsApp?</summary><p>Não. O UaiPlan é um contato como outro qualquer: ele só recebe o que você manda para o número dele.</p></details>
+      <details><summary>O assistente é uma pessoa?</summary><p>Não. É uma inteligência artificial que entende o português do dia a dia, inclusive por áudio. Você dá o nome que quiser a ele e escolhe como ele te cobra. Se ele errar, responda "desfazer" ou corrija no app.</p></details>
+      <details><summary>Funciona no iPhone e no computador?</summary><p>Sim. No iPhone e no computador, o UaiPlan funciona direto no navegador e pelo WhatsApp. No Android, há também um app que lê as notificações do banco.</p></details>
+      <details><summary>Por que o app de Android não está na Play Store?</summary><p>A Uai Soluções está concluindo o registro da empresa, e a Play Store exige o CNPJ para publicar como empresa. Assim que sair, o app entra na loja. Até lá, ele é instalado pelo nosso site, depois que você cria a conta.</p></details>
+      <details><summary>Funciona com o e-mail da empresa?</summary><p>Gmail, Google Workspace, Outlook e Microsoft 365 entram com um toque. Se a empresa exigir aprovação do TI, dá para vincular o calendário por link.</p></details>
+      <details><summary>Posso cancelar quando quiser?</summary><p>Sim, sem multa, pelo próprio app. Você continua usando até o fim do período já pago.</p></details>
+      <details><summary>Quem está por trás do UaiPlan?</summary><p>A Uai Soluções, uma empresa mineira. O registro está em andamento e o CNPJ entra aqui assim que sair. Fale com a gente: escreva <b>suporte</b> no assistente ou mande um e-mail para <a href="mailto:contato@uaiplan.com.br">contato@uaiplan.com.br</a>.</p></details>
+    </section>
+
+    <div class="final">
+      <h2>Comece a conversa hoje</h2>
+      <p>14 dias grátis, sem cartão. Depois, a partir de <b data-price="from">R$ 19,90</b>/mês. Em dois minutos você manda o primeiro áudio.</p>
+      <a class="btn" href="agenda/" data-cta="final">Testar grátis</a>
+      <p class="mineiro">Organizado igual mineiro: sem pressa, mas sem esquecer nada.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© <span id="year"></span> UaiPlan · Uai Soluções (registro em andamento)</span>
+      <span>
+        <a href="privacidade.html">Privacidade</a> ·
+        <a href="exclusao-de-dados.html">Exclusão de dados</a> ·
+        <a href="mailto:contato@uaiplan.com.br">contato@uaiplan.com.br</a>
+      </span>
+    </div>
+  </footer>
+
+  <div class="stickycta" aria-hidden="true">
+    <span class="gift" aria-hidden="true">🎁</span>
+    <div><strong>14 dias grátis, com tudo liberado</strong><small data-sticky-note>Sem cartão · cancele quando quiser</small></div>
+    <a class="btn primary" href="agenda/" data-cta="flutuante" tabindex="-1"><span class="long">Começar meu teste grátis →</span><span class="short">🎁 Testar grátis por 14 dias</span></a>
+    <button class="x" type="button" aria-label="Fechar" tabindex="-1">×</button>
+  </div>
+  <div class="talkpanel" id="talkpanel" role="dialog" aria-label="Fale com a gente" hidden>
+    <header><b>Oi! Como podemos ajudar? 👋</b><small>Respondemos de seg. a sex., das 9h às 18h</small></header>
+    <a class="first" href="agenda/" data-via="teste" data-cta="contato"><span>🎁</span><span><b>Começar meu teste grátis</b><small>14 dias com tudo liberado, sem cartão</small></span></a>
+    <a href="https://wa.me/5531990175591?text=Ol%C3%A1!%20Vim%20pelo%20site%20do%20UaiPlan%20e%20quero%20saber%20mais." target="_blank" rel="noopener" data-via="whatsapp"><span>💬</span><span><b>Falar com uma pessoa</b><small>No WhatsApp, com o nosso time</small></span></a>
+    <a href="#duvidas" data-via="duvidas"><span>🙋</span><span><b>Tirar uma dúvida agora</b><small>Respostas para as dúvidas comuns</small></span></a>
+    <a href="https://wa.me/5531990175591?text=Ol%C3%A1!%20Quero%20o%20UaiPlan%20para%20minha%20equipe." target="_blank" rel="noopener" data-via="equipe"><span>🏢</span><span><b>Quero para minha equipe</b><small>Planos para empresas e parceiros</small></span></a>
+    <a href="mailto:contato@uaiplan.com.br?subject=UaiPlan" data-via="email"><span>✉️</span><span><b>Mandar um e-mail</b><small>contato@uaiplan.com.br</small></span></a>
+  </div>
+  <button class="talk" type="button" aria-controls="talkpanel" aria-expanded="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.5 3 2 6.9 2 11.6c0 2.4 1.2 4.6 3.1 6.1L4.5 21l3.8-1.9c1.2.4 2.4.6 3.7.6 5.5 0 10-3.9 10-8.6S17.5 3 12 3z"/></svg><span class="lbl">Fale com a gente</span></button>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---------------- preços (do sistema; muda no back office, muda aqui) ----------------
+    const API = 'https://btmcwqexnthxnanlfmyu.supabase.co/rest/v1/rpc/';
+    const KEY = 'sb_publishable_-tyEooMbozIWP5S6-LrTzw_i1QWxqt8';
+    const brl = (c) => (c / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const call = (fn, body) => fetch(API + fn, {
+      method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}), keepalive: true,
+    });
+    call('public_pricing').then((r) => r.json()).then((p) => {
+      const plans = Object.fromEntries((p.plans || []).map((x) => [x.id, x]));
+      const set = (k, v) => document.querySelectorAll('[data-price="' + k + '"]').forEach((el) => { el.textContent = v; });
+      const f = plans.founder_monthly, m = plans.individual_monthly, y = plans.individual_yearly;
+      if (f) {
+        set('founder', brl(f.price_cents));
+        const left = f.slots_left;
+        document.querySelector('[data-slots]').textContent = left != null ? 'Restam ' + left + ' de ' + f.slots + ' vagas.' : '';
+        if (left != null && left > 0) document.querySelector('[data-sticky-note]').innerHTML = 'Sem cartão · restam <b>' + left + ' vagas</b> no preço de fundador';
+        document.querySelector('[data-founder-tag]').textContent = left != null && left <= 50 ? 'Últimas ' + left + ' vagas' : 'Para os primeiros ' + f.slots;
+      } else {
+        document.querySelector('[data-plan="founder_monthly"]').hidden = true;
+      }
+      if (m) set('monthly', brl(m.price_cents)); else document.querySelector('[data-plan="individual_monthly"]').hidden = true;
+      if (y) {
+        set('yearly-month', brl(Math.round(y.price_cents / 12)));
+        set('yearly-total', brl(y.price_cents));
+        if (m && m.price_cents * 12 > y.price_cents) {
+          const t = document.querySelector('[data-save-tag]');
+          t.textContent = 'Economize ' + brl(m.price_cents * 12 - y.price_cents);
+          t.hidden = false;
+        }
+      } else document.querySelector('[data-plan="individual_yearly"]').hidden = true;
+      const cheapest = Math.min(...(p.plans || []).map((x) => x.interval === 'year' ? Math.round(x.price_cents / 12) : x.price_cents));
+      if (isFinite(cheapest)) set('from', brl(cheapest));
+    }).catch(() => {});
+
+    // ---------------- funil (sem cookies; nada de dados pessoais) ----------------
+    let anon = null;
+    try {
+      anon = localStorage.getItem('uaiplan_anon');
+      if (!anon) { anon = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()); localStorage.setItem('uaiplan_anon', anon); }
+    } catch (e) { anon = String(Math.random()).slice(2) + Date.now(); }
+    const track = (event, props) => { if (navigator.doNotTrack !== '1') call('track_event', { p_event: event, p_anon: anon, p_props: props || {} }).catch(() => {}); };
+    // Origem da visita (primeiro canal que trouxe a pessoa): ?src=instagram, utm_source ou o site de onde veio.
+    // Vai junto para o app, que grava no cadastro: assim o back office mostra o custo por assinante de cada canal.
+    const SRC_ALIAS = { ig: 'instagram', insta: 'instagram', fb: 'facebook', meta: 'facebook', tt: 'tiktok', yt: 'youtube',
+      li: 'linkedin', lnkd: 'linkedin', gads: 'google', influencer: 'influenciadores', afiliado: 'afiliados', indicacao: 'indicacao' };
+    const REF_HOSTS = [['instagram', 'instagram'], ['facebook', 'facebook'], ['fb.', 'facebook'], ['tiktok', 'tiktok'],
+      ['linkedin', 'linkedin'], ['lnkd.in', 'linkedin'], ['youtube', 'youtube'], ['youtu.be', 'youtube'], ['google.', 'google']];
+    const clean = (s) => String(s || '').toLowerCase().replace(/[^a-z_]/g, '').slice(0, 30);
+    const origin = (() => {
+      const q = new URLSearchParams(location.search);
+      let src = clean(q.get('src') || q.get('utm_source'));
+      src = SRC_ALIAS[src] || src;
+      const cmp = String(q.get('cmp') || q.get('utm_campaign') || '').slice(0, 60);
+      if (!src && document.referrer) {
+        try {
+          const host = new URL(document.referrer).hostname;
+          if (host !== location.hostname) src = (REF_HOSTS.find(([h]) => host.includes(h)) || [, 'outros'])[1];
+        } catch (e) {}
+      }
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem('uaiplan_src') || 'null'); } catch (e) {}
+      if (saved && saved.src) return saved;
+      const o = { src, cmp };
+      if (src) { try { localStorage.setItem('uaiplan_src', JSON.stringify(o)); } catch (e) {} }
+      return o;
+    })();
+    if (origin.src) {
+      document.querySelectorAll('a[href^="agenda/"]').forEach((a) => {
+        const u = new URL(a.getAttribute('href'), location.href);
+        u.searchParams.set('src', origin.src);
+        if (origin.cmp) u.searchParams.set('cmp', origin.cmp);
+        a.href = u.toString();
+      });
+    }
+    track('landing_view', { ref: document.referrer ? new URL(document.referrer).hostname : '', src: origin.src, cmp: origin.cmp });
+    let scrolled = false;
+    addEventListener('scroll', () => {
+      if (!scrolled && scrollY + innerHeight >= document.body.scrollHeight / 2) { scrolled = true; track('scroll_50'); }
+    }, { passive: true });
+    document.querySelectorAll('[data-cta]').forEach((a) => a.addEventListener('click', () => track('cta_click', { pos: a.dataset.cta, src: origin.src })));
+    let pricingSeen = false;
+    new IntersectionObserver(([e]) => { if (e.isIntersecting && !pricingSeen) { pricingSeen = true; track('pricing_view'); } })
+      .observe(document.getElementById('planos'));
+
+    // ---------------- barra do teste grátis e "Fale com a gente" ----------------
+    // A barra aparece depois do botão do topo e some onde já há botão de teste (planos e final).
+    const sticky = document.querySelector('.stickycta');
+    let dismissed = false;
+    try { dismissed = sessionStorage.getItem('uaiplan_sticky_off') === '1'; } catch (e) {}
+    const inView = new Map();
+    const refresh = () => {
+      const on = !dismissed && ![...inView.values()].some(Boolean) && scrollY > 200;
+      sticky.classList.toggle('on', on);
+      sticky.setAttribute('aria-hidden', on ? 'false' : 'true');
+      sticky.querySelectorAll('a, button').forEach((el) => { el.tabIndex = on ? 0 : -1; });
+    };
+    const watch = new IntersectionObserver((es) => { es.forEach((e) => inView.set(e.target, e.isIntersecting)); refresh(); });
+    ['[data-cta="hero"]', '#planos', '.final'].forEach((q) => { const el = document.querySelector(q); if (el) watch.observe(el); });
+    addEventListener('scroll', refresh, { passive: true });
+    sticky.querySelector('.x').addEventListener('click', () => {
+      dismissed = true;
+      try { sessionStorage.setItem('uaiplan_sticky_off', '1'); } catch (e) {}
+      refresh();
+    });
+
+    const talk = document.querySelector('.talk');
+    const panel = document.getElementById('talkpanel');
+    const openPanel = (open) => {
+      panel.hidden = !open;
+      talk.setAttribute('aria-expanded', String(open));
+      if (open) track('contact_open');
+    };
+    talk.addEventListener('click', (e) => { e.stopPropagation(); openPanel(panel.hidden); });
+    panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+      track('contact_click', { via: a.dataset.via, src: origin.src });
+      if (a.getAttribute('href').startsWith('#')) openPanel(false);
+    }));
+    document.addEventListener('click', (e) => { if (!panel.hidden && !panel.contains(e.target)) openPanel(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { openPanel(false); talk.focus(); } });
+
+    // ---------------- conversa animada ----------------
+    // Um dia inteiro numa conversa só. me: a pessoa (audio = duração; o texto vira transcrição); bot: o assistente;
+    // day: separador de data; at: horário mostrado no balão.
+    const SCRIPT = [
+      { day: 'HOJE' },
+      { at: '06:30', bot: '☀️ *Bom dia, Marina!* Aqui é o *Severino*.\n\n📅 10h Reunião de planejamento\n💸 Vence hoje: *Conta de luz (R$ 187,40)*\n📝 3 tarefas · 🌤️ 27° e sol em BH' },
+      { at: '09:15', me: 'gastei 32 e 50 no almoço', audio: '0:04' },
+      { at: '09:15', bot: '💸 *R$ 32,50* — Almoço\n🏦 Nubank · 🏷️ Alimentação' },
+      { at: '11:02', me: 'me lembra de trocar o pneu amanhã, quem vai levar é meu pai', audio: '0:06' },
+      { at: '11:02', bot: '✅ *Tarefa anotada:* Trocar pneu do carro, amanhã\n\n🗓️ Bloqueio 1h na sua agenda? Livre: *1.* 08:00  *2.* 12:00  *3.* 15:00' },
+      { at: '11:03', me: '1' },
+      { at: '11:03', bot: '🗓️ Agenda bloqueada: amanhã, 08:00–09:00.\n\n👥 Anoto também *Combinar com o pai a troca do pneu*?' },
+      { at: '11:03', me: 'sim' },
+      { at: '11:03', bot: '✅ Anotado para hoje.' },
+      { at: '14:20', me: 'já paguei a luz' },
+      { at: '14:20', bot: '💸 *R$ 187,40* — Conta de luz\n✅ Baixa feita e tarefa concluída.' },
+      { at: '15:40', me: 'me lembra de ir no cartório sábado' },
+      { at: '15:40', bot: '🏦 Sábado não tem expediente. Quer passar para *segunda*?\n🟢 Livre: 10:00–12:00' },
+      { at: '15:41', me: 'sim' },
+      { at: '15:41', bot: '📅 Passei para segunda.' },
+      { at: '18:05', me: 'quanto gastei com mercado esse mês?' },
+      { at: '18:05', bot: '🛒 *Mercado em outubro:* R$ 612,40\n▫️ 7 compras · 18% acima de setembro' },
+      { at: '21:00', bot: '🌙 *Check-in de hoje:*\n📖 Ler: 3 de 10 páginas\n🏃 Correr: 1 de 3 na semana\n\nLeitura tá mais parada que fila de banco. Vai enrolar até quando? 😏' },
+      { at: '21:04', me: 'corri hoje e li 10 páginas', audio: '0:05' },
+      { at: '21:04', bot: '📝 *Anotado!*\n🏃 Correr: 2 de 3 · bom ritmo\n📖 Ler: 13 páginas ✅\n\nOlha só, quando quer, consegue. 😎' },
+      { day: '1º DE NOVEMBRO' },
+      { at: '08:00', bot: '📊 *Seu outubro*\n💰 Entrou R$ 8.450 · Saiu R$ 6.120\nGastos 13% menores 👏\n🎯 Ler: 11 de 17 dias\n🐢 *Meu procrastinador:* 68% no prazo\n🔁 campeã: "Ligar pro contador" (3x)' },
+    ];
+
+    const msgs = document.getElementById('msgs');
+    const status = document.getElementById('status');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let visible = true;
+
+    const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const fmt = (s) => esc(s).replace(/\*([^*\n]+)\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    function add(m) {
+      const el = document.createElement('div');
+      if (m.day) {
+        el.className = 'day-pill';
+        el.textContent = m.day;
+      } else {
+        el.className = 'b ' + (m.me ? 'me' : 'bot');
+        el.innerHTML = m.audio
+          ? `<div class="audio"><span class="play">▶</span><span class="wave"></span><span class="dur">${m.audio}</span></div>` +
+            `<span class="transcript">"${esc(m.me)}"</span><span class="t">${m.at}</span>`
+          : fmt(m.me ?? m.bot) + `<span class="t">${m.at}</span>`;
+      }
+      msgs.appendChild(el);
+      trim();
+    }
+
+    // Como no WhatsApp: as mais antigas sobem e saem inteiras (nada cortado no topo).
+    function trim() {
+      const top = msgs.getBoundingClientRect().top + 8;
+      while (msgs.children.length > 1 && msgs.firstElementChild.getBoundingClientRect().top < top) msgs.firstElementChild.remove();
+    }
+
+    async function play() {
+      if (reduced) { SCRIPT.slice(-6).forEach(add); return; }
+      for (;;) {
+        msgs.innerHTML = '';
+        for (const m of SCRIPT) {
+          while (!visible) await sleep(300);
+          if (m.bot) {
+            status.textContent = 'digitando…';
+            const t = document.createElement('div');
+            t.className = 'typing';
+            t.innerHTML = '<i></i><i></i><i></i>';
+            msgs.appendChild(t);
+            trim();
+            await sleep(900 + Math.min(m.bot.length * 7, 900));
+            t.remove();
+            status.textContent = 'online';
+          } else {
+            await sleep(m.day ? 600 : 800);
+          }
+          add(m);
+          await sleep(m.bot ? 1500 : m.day ? 400 : 500);
+        }
+        await sleep(5000);
+      }
+    }
+
+    // Só anima quando o celular está na tela.
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(document.querySelector('.phone'));
+    play();
+  </script>
+</body>
+</html>
