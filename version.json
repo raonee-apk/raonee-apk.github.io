@@ -1,0 +1,6 @@
+{
+  "version": "1.28.0",
+  "build": 42,
+  "notes": "Aviso de erros (Sentry) e e-mails de acesso em português",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk"
+}
