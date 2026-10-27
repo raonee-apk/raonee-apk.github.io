@@ -1,0 +1,6 @@
+{
+  "version": "1.29.0",
+  "build": 43,
+  "notes": "Voltar do Android respeita as telas e pergunta antes de sair; na Família você escolhe com quem compartilhar suas finanças; cancelar ou pausar a assinatura; ajuda para vincular o Outlook",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk"
+}

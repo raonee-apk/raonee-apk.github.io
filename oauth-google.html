@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Conectando… — UaiPlan</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; font-family: system-ui, sans-serif; background: #F8FAFC; color: #1A1A2E; }
+  @media (prefers-color-scheme: dark) { body { background: #0F172A; color: #F8FAFC; } }
+</style>
+</head>
+<body>
+<p>Conectando sua agenda ao UaiPlan…</p>
+<script>
+  // Retorno do login do Google: repassa o código ao servidor do UaiPlan, que conclui a conexão.
+  location.replace('https://btmcwqexnthxnanlfmyu.supabase.co/functions/v1/calendar-oauth' + location.search);
+</script>
+</body>
+</html>
