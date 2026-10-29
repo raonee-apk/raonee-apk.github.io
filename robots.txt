@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /agenda/
+Sitemap: https://uaiplan.com.br/sitemap.xml
