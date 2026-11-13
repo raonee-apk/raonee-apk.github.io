@@ -1,0 +1,6 @@
+{
+  "version": "1.30.4",
+  "build": 53,
+  "notes": "Ligar o Google Agenda sem o aviso de verificação (o UaiPlan já é verificado pelo Google).",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk"
+}
