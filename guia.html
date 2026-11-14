@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Primeiros passos — UaiPlan</title>
+<meta name="description" content="Guia rápido do UaiPlan: o que mandar no WhatsApp para anotar gastos, marcar compromissos, criar lembretes e metas.">
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#F8FAFC; --surface:#FFFFFF; --text:#1A1A2E; --muted:#6B7280; --line:#E5E7EB; --primary:#3B5BDB; --tint:#E6EBFC;
+    --wa-me:#D9FDD3; --wa-text:#111B21; }
+  @media (prefers-color-scheme: dark) { :root:not(.print) { --bg:#0F172A; --surface:#1E293B; --text:#F8FAFC; --muted:#94A3B8; --line:#334155;
+    --primary:#5C7CFA; --tint:#1E2A5E; --wa-me:#005C4B; --wa-text:#E9EDEF; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  header { border-bottom:1px solid var(--line); }
+  header a { display:inline-flex; align-items:center; gap:10px; padding:16px; color:var(--text); text-decoration:none; font-weight:700; font-size:20px; }
+  header img { width:28px; height:28px; } header b { color:var(--primary); }
+  main { max-width:720px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:clamp(28px,5vw,38px); line-height:1.15; margin:8px 0 8px; letter-spacing:-.02em; }
+  .lead { color:var(--muted); font-size:17px; margin:0 0 24px; }
+  video { width:100%; max-width:340px; display:block; margin:0 auto 32px; border-radius:20px; background:#0F172A; }
+  section { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin:0 0 14px; break-inside:avoid; }
+  h2 { font-size:19px; margin:0 0 6px; display:flex; align-items:center; gap:10px; }
+  h2 .n { flex:none; width:28px; height:28px; border-radius:50%; background:var(--tint); color:var(--primary); font-size:15px; display:grid; place-items:center; }
+  section p { margin:4px 0 10px; }
+  .says { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 4px; }
+  .says span { background:var(--wa-me); color:var(--wa-text); border-radius:10px 10px 2px 10px; padding:6px 11px; font-size:15px; }
+  .tip { color:var(--muted); font-size:14.5px; margin:8px 0 0; }
+  .cmds b { background:var(--tint); color:var(--primary); border-radius:6px; padding:1px 7px; margin-right:2px; font-weight:700; }
+  footer { color:var(--muted); font-size:14px; text-align:center; margin-top:28px; }
+  a { color:var(--primary); }
+  .print .noprint { display:none; }
+  .print main { padding-top:8px; } .print section { padding:12px 16px; margin-bottom:10px; }
+  @page { size:A4; margin:14mm 12mm; }
+</style>
+</head>
+<body>
+<header><a href="./"><img src="assets/mark.png" alt=""><span>Uai<b>Plan</b></span></a></header>
+<main>
+  <h1>Primeiros passos no UaiPlan</h1>
+  <p class="lead">Tudo funciona pelo WhatsApp: mande <b>áudio, texto, foto ou PDF</b> do jeito que você fala. Veja o que dá para fazer.</p>
+
+  <video class="noprint" src="assets/guia/primeiros-passos.mp4" poster="assets/guia/primeiros-passos.jpg" controls playsinline preload="none"></video>
+
+  <section>
+    <h2><span class="n">1</span>Gastos e receitas</h2>
+    <p>Fale o valor e o que foi. Ele escolhe a categoria e confirma.</p>
+    <div class="says"><span>Gastei 32,50 no almoço</span><span>Recebi 3 mil de salário</span><span>TV de 2.400 em 10x no Nubank</span><span>Aluguel de 1.800 todo dia 5</span></div>
+    <p class="tip">Foto de boleto, comprovante ou o PDF da fatura do cartão também valem.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Compromissos</h2>
+    <p>Ele marca na sua agenda e avisa antes.</p>
+    <div class="says"><span>Marca dentista quinta às 15h</span><span>O que tenho amanhã?</span></div>
+    <p class="tip">Ligue seu Google Agenda ou Outlook em <b>Mais › Calendários</b> para ver tudo num lugar só e ser avisado quando algo bater de horário.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Tarefas e lembretes</h2>
+    <p>Sem hora, ele lembra às 9h do dia. Com hora, na hora.</p>
+    <div class="says"><span>Me lembra de pagar a internet dia 10</span><span>Já paguei a internet</span></div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Metas</h2>
+    <p>Conte o que quer conquistar. Ele procura horário na sua agenda e à noite pergunta como foi.</p>
+    <div class="says"><span>Quero correr 3 vezes por semana</span><span>Quero guardar 300 por mês para a viagem</span></div>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>Pergunte o que quiser</h2>
+    <div class="says"><span>Quanto gastei com mercado esse mês?</span><span>Quanto falta pagar este mês?</span><span>Que horas abre o Poupatempo?</span></div>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>Todo dia</h2>
+    <p>Às <b>7h</b> chega o resumo do dia: agenda, tarefas e contas. Mande sua 📍 localização uma vez para incluir a previsão do tempo.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span>Saiu errado?</h2>
+    <p>Responda <b>desfazer</b>, ou corrija falando: <i>“na verdade foram 35”</i>.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">8</span>No app, tudo organizado</h2>
+    <p>Relatórios por categoria, agenda, tarefas e o progresso das metas em <a href="https://uaiplan.com.br/agenda/">uaiplan.com.br/agenda</a> (mesmo login) ou no app Android.</p>
+    <p class="cmds tip">Atalhos no WhatsApp: <b>resumo</b> <b>saldo</b> <b>agenda</b> <b>tarefas</b> <b>ajuda</b> <b>suporte</b></p>
+  </section>
+
+  <footer>Dúvidas? Escreva <b>suporte</b> no WhatsApp. Atendimento de segunda a sexta, das 9h às 18h.</footer>
+</main>
+<script>if (new URLSearchParams(location.search).has('print')) document.documentElement.classList.add('print');</script>
+</body>
+</html>
