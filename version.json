@@ -1,0 +1,6 @@
+{
+  "version": "1.33.2",
+  "build": 68,
+  "notes": "Importar lista no back office abre o .csv do Excel e avisa quando algo dá errado; desvincular calendário mostra o andamento e o resultado",
+  "apk": "https://github.com/raonee-apk/raonee-apk.github.io/releases/latest/download/UaiPlan.apk"
+}
